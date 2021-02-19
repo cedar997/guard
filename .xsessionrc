@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+if [ $USER != "xzh" ];then
+exit 0
+fi 
+/opt/guard/login.py
+if [ $? != 0 ];then
+	echo error
+else
+echo 'hello'
+fi
