@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import requests
+
 host = "http://localhost:8080/"
 def getGold():
     
@@ -47,15 +48,7 @@ def setEndTime(t):
     data = {"time":str(t)}
     res = requests.post(url=url,data=data)
     print(res.text)
-def getday():
-    day=-1
-    with open("/opt/guard/day","r") as f:
-        a=f.read() 
-        day=int(a)
-    return day
-def setday(day):
-    with open("/opt/guard/day","w") as f:
-        f.write(str(day))
+
 def getState():
     endpoint = "state"
     url = ''.join([host,endpoint])

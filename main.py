@@ -7,9 +7,9 @@ app = Flask(__name__)
 current_state=0
 @app.route('/',methods=['GET','POST'])
 def hello_world():
-    s=db.getEndTime()
+    s=db.accessEndTime()
     re_time="0秒"
-    gold=db.getGold()
+    gold=db.accessGold()
     if(s>0):
         re_time=str(int(s/60))+"分"+str(s%60)+"秒"
     return render_template('main.html',re_time=re_time,gold=gold)
@@ -20,18 +20,21 @@ def parent():
         arg=request.form.get('arg')
         if cmd == 'addgold':
             arg=int(arg)
-            db.addGold(arg)
+            db.addGold_(arg)
+        elif cmd == "debug":
+            arg=int(arg)
+            db.accessDebug(1)
         return redirect(url_for('parent'))
     if request.method=="GET":
-        s=db.getEndTime()
+        s=db.accessEndTime()
         re_time="0秒"
-        gold=db.getGold()
+        gold=db.accessGold()
         if(s>0):
             re_time=str(int(s/60))+"分"+str(s%60)+"秒"
         return render_template('parent.html',re_time=re_time,gold=gold)
 @app.route('/getGold',methods=['GET'])
 def getGoldApi():
-    gold=db.getGold()
+    gold=db.accessGold()
     return str(gold)
 
 @app.route('/wifioff',methods=['GET'])
@@ -47,7 +50,7 @@ def setGoldApi():
     if request.method=='POST':
         gold=request.form['gold']
         gold=int(gold)
-        db.setGold(gold)
+        db.accessGold(gold)
         return str(gold)
     return "0"
 @app.route('/addGold',methods=['POST'])
@@ -55,12 +58,12 @@ def addGoldApi():
     if request.method=='POST':
         gold=request.form['gold']
         gold=int(gold)
-        db.addGold(gold)
+        db.addGold_(gold)
         return str(gold)
     return "0"
 @app.route('/getTime',methods=['GET'])
 def getTimeApi():
-    t=db.getEndTime()
+    t=db.accessEndTime()
     t=int(t)
     return str(t)
 @app.route('/setTime',methods=['POST'])
@@ -68,7 +71,7 @@ def setTimeApi():
     if request.method=='POST':
         t=request.form['time']
         t=int(t)
-        db.setEndTime(t)
+        db.accessEndTime(t)
         return str(t)
     return "0"
 @app.route('/state',methods=['GET','POST'])

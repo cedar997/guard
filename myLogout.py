@@ -6,7 +6,7 @@ def lock():
     time.sleep(5)
     alerted=True
     while(True):
-        re_time=db.getEndTime()
+        re_time=db.accessEndTime()
         if(re_time<0):
             os.system('gnome-session-quit  --no-prompt --force')
             exit(0)

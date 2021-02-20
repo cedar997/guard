@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import sqlite3
 import time
-dbname="/opt/guard/test.db"
+dbname="/opt/guard/data/test.db"
 def create():
     conn = sqlite3.connect(dbname)
     print("Opened database successfully")
@@ -15,41 +15,80 @@ def create():
     print ("Table created successfully")
     conn.commit()
     conn.close()
-def get(field):
+def create_kv():
+    conn = sqlite3.connect(dbname)
+    print("Opened database successfully")
+    c = conn.cursor()
+    c.execute('''CREATE TABLE t_kv  
+        (key           TEXT  PRIMARY KEY     NOT NULL,
+       
+        value            TEXT     
+        
+        );''')
+    print ("Table created successfully")
+    conn.commit()
+    conn.close()
+def get(key):
     conn = sqlite3.connect(dbname)
     cur = conn.cursor()
-    name="xzh"
-    cur.execute("SELECT "+field+" FROM user where name= ?",(name,))
+    
+    cur.execute("SELECT value FROM t_kv where key= ?",(key,))
     row = cur.fetchall()[0]
     conn.close()
     return row[0]
-def set(field,value):
+def init_kv(key,value):
     conn = sqlite3.connect(dbname)
     cur = conn.cursor()
-    name="xzh"
-    cur.execute("update user set "+field+" = ? where name = ? ",(value,name))
+    
+    cur.execute("insert into t_kv (key,value) values(?,?);",(key,value))
     conn.commit()
     conn.close()
-def getEndTime():
-    end=int(get('time'))
-    end=int(end)-int(time.time())
-    return end
-def setEndTime(t):
-    end=t+int(time.time())
-    set('time',end)
-def getGold():
-    return int(get('gold'))
-def setGold(gold):
-    set('gold',gold)
-
-def addGold(x):
+def set(key,value):
     conn = sqlite3.connect(dbname)
     cur = conn.cursor()
-    name="xzh"
-    cur.execute("update user set gold= gold + ? where name = ? ",(x,name))
+    key=str(key)
+    value=str(value)
+    cur.execute("update t_kv set value = ? where key = ? ",(value,key))
     conn.commit()
     conn.close()
 
+
+def accessEndTime(t=None):
+    if(t is None):
+        end=int(get("time"))
+        end=int(end)-int(time.time())
+        return end
+    else:
+        end=t+int(time.time())
+        set("time",end)
+        return end
+def accessGold(gold=None):
+    if(gold is None):
+        return int(get("gold"))
+    else:
+        set("gold",gold)
+        return gold
+
+def addGold_(x):
+    g=accessGold()
+    accessGold(g+x)
+def accessDay(day=None):
+    if(day is None):
+        return int(get("day"))
+    else:
+        set("day",day)
+        return day
+
+def accessDebug(debug=None):
+    if(debug is None):
+        return int(get("debug"))
+    else:
+        set("debug",debug)
+        return debug
 if __name__ == '__main__':
-    setGold(44)
-    print(getGold())
+    #create_kv()
+    #init_kv("time","3")
+    #init_kv("day","18")
+    #init_kv("debug",0)
+    accessDebug(1)
+    print(accessDebug())
