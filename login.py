@@ -48,6 +48,7 @@ class Application(tk.Frame):  #定义Application类，派生于Frame类
         self.anki=tk.Button(self,text='anki',font=mfont,bg='pink',fg='green',bd=2,width=10,command=vc.anki)
         # self.anki.pack()
         self.skype=tk.Button(self,text='skype',font=mfont,bg='pink',fg='green',bd=2,width=10,command=vc.skype)
+        self.qq=tk.Button(self,text='qq',font=mfont,bg='pink',fg='green',bd=2,width=10,command=vc.qq)
         
         self.debug=tk.Button(self,text='测试',font=mfont,bg='pink',fg='green',bd=2,width=10,command=vc.debug)
         
@@ -55,7 +56,7 @@ class Application(tk.Frame):  #定义Application类，派生于Frame类
         
         self.daycheck=tk.Button(self,text='签到',font=mfont,bg='pink',fg='green',bd=2,width=10,command=self.daycheck_fun)
         self.mydict=tk.Button(self,text='词典',font=mfont,bg='pink',fg='green',bd=2,width=10,command=vc.mydict)
-
+        self.cheese=tk.Button(self,text='拍照',font=mfont,bg='pink',fg='green',bd=2,width=10,command=vc.cheese)
 
         self.time_label.grid(row=0,column=1)
         self.daycheck.grid(row=0,column=2)
@@ -72,15 +73,21 @@ class Application(tk.Frame):  #定义Application类，派生于Frame类
 
         self.wps.grid(row=3,column=0)
         self.music.grid(row=3,column=1)
+        #是否打开学习网页
         self.kidweb.grid(row=3,column=2)
         self.skype.grid(row=3,column=3)
         self.mydict.grid(row=3,column=4)
+        
+        self.cheese.grid(row=4,column=3)
+        
     def daycheck_fun(self):
         daychek_code=vc.day_check()
         if(daychek_code==0):
             self.daycheck['text']="已签成功"
         elif(daychek_code==-2):
             self.daycheck['text']="请在12点后签到"
+        elif(daychek_code==-3):
+            self.daycheck['text']="请在周末签到"
         else:
             self.daycheck['text']="已签到过了"
         self.update_gold()

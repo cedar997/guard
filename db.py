@@ -90,5 +90,4 @@ if __name__ == '__main__':
     #init_kv("time","3")
     #init_kv("day","18")
     #init_kv("debug",0)
-    accessDebug(1)
-    print(accessDebug())
+   pass 

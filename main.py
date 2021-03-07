@@ -23,7 +23,12 @@ def parent():
             db.addGold_(arg)
         elif cmd == "debug":
             arg=int(arg)
-            db.accessDebug(1)
+            if(arg==1):
+                db.accessDebug(1)
+            #强行注销
+            elif(arg==2):
+                os.system("su   xzh  -c 'gnome-session-quit  --no-prompt --force' ")
+            
         return redirect(url_for('parent'))
     if request.method=="GET":
         s=db.accessEndTime()

@@ -62,4 +62,12 @@ def setState(t):
     res = requests.post(url=url,data=data)
     print(res.text)
 if __name__ == '__main__':
-    setState(2)
+    #setState(2)
+    print(getGold())
+    print(getEndTime())
+    import sys
+    if(len(sys.argv)>1):
+        g=int(sys.argv[1])
+        addGold(g)
+        print(getGold())
+

@@ -20,8 +20,8 @@ def valid_time(add_sec):
     if(end_sec>limit_sec):
         return "超过最晚时间:{}时{}分".format(h,m)
     
-    h=17
-    m=30
+    h=14
+    m=0
     limit_sec=time_sec_of_day(h,m)
     if(start_sec<limit_sec):
         return "还没到晚上时间，要等到:{}时{}分".format(h,m)
@@ -29,6 +29,8 @@ def valid_time(add_sec):
     return "ok"
 def wps():
     os.system("firejail --net=none  wps & ")
+def cheese():
+    os.system("firejail cheese    &")
 def music():
         os.system("firejail --ignore=protocol netease-cloud-music --no-sandbox  &")
 def anki():
@@ -37,22 +39,37 @@ def anki():
 def skype():
         # os.system("firejail --ignore=protocol skypeforlinux  --no-sandbox  &")
         os.system("firejail skypeforlinux    &")
+def qq():
+        # os.system("firejail --ignore=protocol skypeforlinux  --no-sandbox  &")
+        os.system("/opt/apps/com.qq.im.deepin/files/run.sh   &")        
 def debug():
     d=db.accessDebug()
     if(d==1):
         db.accessDebug(0)
         exit(0)
-def kidweb():
-        os.system("/usr/local/bin/electron /opt/guard/kidweb  "+ " &")
-        webdb.setState(2)
-        os.system("/opt/guard/screentake.py "+ " &")
+def kidweb():    
+    now=datetime.datetime.now()
+    #星期1为0
+    week=now.weekday() 
+    
+    if(week<5):
+        return 
+
+    os.system("/usr/local/bin/electron /opt/guard/kidweb  "+ " &")
+    webdb.setState(2)
+    os.system("/opt/guard/screentake.py "+ " &")
+
 def logout():
         db.accessEndTime(3)
         os.system("/opt/guard/myLogout.py "+ " &")
         exit(1)
 def day_check():
     now=datetime.datetime.now()
+    #星期1为0
+    week=now.weekday() 
     
+    if(week<5):
+        return -3
     if(now.hour<12):
         return -2
     
@@ -61,7 +78,7 @@ def day_check():
         return -1
     
     db.accessDay(now.day)
-    db.accessGold(120)
+    db.addGold_(120)
     
     #print(db.getGold())
     return 0
@@ -70,4 +87,4 @@ def myexit():
 def mydict():
     os.system("/opt/guard/mydict.py "+ " &")
 if __name__ == '__main__':
-    print(valid_time(1*3600))
+    day_check()
